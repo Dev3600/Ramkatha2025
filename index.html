@@ -7,7 +7,7 @@
 <title>Upload and Download Image</title>
 <link rel="icon" type="image/png" href="favicon.jpeg">
 <style>
-    #content {
+    #content {  
         /* position: relative; */
         width: auto;
     }
@@ -142,18 +142,53 @@ document.getElementById('imageUpload').addEventListener('change', function(event
     }
 });
 
+// document.getElementById('downloadButton').addEventListener('click', function() {
+//             var contentDiv = document.getElementById('content');
+//             html2canvas(contentDiv, {
+//                 // No scaling, use the exact size of the content
+//                 scale: 1,
+//                 useCORS: true
+//             }).then(function(canvas) {
+//                 var link = document.createElement('a');
+//                 link.href = canvas.toDataURL('image/png');
+//                 link.download = 'ramkatha.png'; // Image will be downloaded as ramkatha.png
+//                 document.body.appendChild(link);
+//                 link.click();
+//                 document.body.removeChild(link);
+//             });
+//         });
 document.getElementById('downloadButton').addEventListener('click', function() {
-    var contentDiv = document.getElementById('content');
-    html2canvas(contentDiv).then(function(canvas) {
+    var mainBannerImg = document.getElementById('main_banner_img');
+    var sampleImg = document.getElementById('sample_img');  
+    
+    // Create a temporary canvas to combine the images
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+
+    // Set canvas size to match the main banner image size
+    canvas.width = mainBannerImg.width;
+    canvas.height = mainBannerImg.height;
+
+    // Draw the main banner image
+    ctx.drawImage(mainBannerImg, 0, 0);
+
+    // Draw the uploaded sample image
+    var sampleImgElement = new Image();
+    sampleImgElement.onload = function() {
+        ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
+
+        // Create the link for downloading the image
         var link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
-        link.download = 'image_with_name_and_photo.png';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-});
+        link.download = 'Ram-katha-2025.png';
 
+        // Trigger the download
+        link.click();
+    };
+
+    // Load the uploaded image onto the canvas
+    sampleImgElement.src = sampleImg.src;
+});
 
 </script>
 </body>
