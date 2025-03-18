@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Upload and Download Image</title>
@@ -19,9 +19,9 @@
 
     img#sample_img {
         position: absolute;
-        top: 33%;
+        top: 21%;
         right: 6%;
-        height: 27.9%;
+        height: 20%;
         width: 36%;
         border-radius: 10px;
     }
@@ -67,7 +67,7 @@
         font-weight: bold;
         font-size: 17px;
         position: absolute;
-        top: 65%;
+        top: 43%;
         text-align: center;
         font-family: sans-serif;
         right: 3%;
@@ -142,50 +142,19 @@ document.getElementById('imageUpload').addEventListener('change', function(event
     }
 });
 
-// document.getElementById('downloadButton').addEventListener('click', function() {
-//     var contentDiv = document.getElementById('content');
-//     html2canvas(contentDiv).then(function(canvas) {
-//         var link = document.createElement('a');
-//         link.href = canvas.toDataURL('image/png');
-//         link.download = 'image_with_name_and_photo.png';
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//     });
-// });
-
 document.getElementById('downloadButton').addEventListener('click', function() {
-    var mainBannerImg = document.getElementById('main_banner_img');
-    var sampleImg = document.getElementById('sample_img');  
-    
-    // Create a temporary canvas to combine the images
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
-
-    // Set canvas size to match the main banner image size
-    canvas.width = mainBannerImg.width;
-    canvas.height = mainBannerImg.height;
-
-    // Draw the main banner image
-    ctx.drawImage(mainBannerImg, 0, 0);
-
-    // Draw the uploaded sample image
-    var sampleImgElement = new Image();
-    sampleImgElement.onload = function() {
-        ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
-
-        // Create the link for downloading the image
+    var contentDiv = document.getElementById('content');
+    html2canvas(contentDiv).then(function(canvas) {
         var link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
-        link.download = 'Ram-katha-2025.png';
-
-        // Trigger the download
+        link.download = 'image_with_name_and_photo.png';
+        document.body.appendChild(link);
         link.click();
-    };
-
-    // Load the uploaded image onto the canvas
-    sampleImgElement.src = sampleImg.src;
+        document.body.removeChild(link);
+    });
 });
+
+
 </script>
 </body>
 </html>
