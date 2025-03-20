@@ -36,21 +36,43 @@
                 display: none;
                 text-align: center;
             }
+            .input_name{
+        border:1px solid #DB6F14;
+        padding:20px;
+        font-weight: bold;
+        font-size: 20px;
+        color: black;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
             .hidden {
                 display: none;
+            }
+            .ButtonStyle{   
+                color: white;
+        border: none;
+        outline: none;
+        background-color: #DB6F14;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-size: 17px;
             }
         </style>
     </head>
     <body>
-        <h2>Upload Your Photo</h2>
+        <!-- <h2>ફોટો અપલોડ કરો</h2> -->
 
         <!-- Hidden file input and text input -->
         <input type="file" id="upload" accept="image/*" class="hidden">
-        <input type="text" id="userName" placeholder="તમારું નામ દાખલ કરો">
+        <input type="text" id="userName" placeholder="તમારું નામ દાખલ કરો"
+            class="input_name">
 
-        <!-- Custom button for photo upload -->
-        <button onclick="uploadButton()">ફોટો અપલોડ કરો</button>
-        
+        <div class="ButtonDown">
+            <!-- Custom button for photo upload -->
+            <button onclick="uploadButton()" class="ButtonStyle">ફોટો અપલોડ
+                કરો</button>
+        </div>
+
         <br><br>
 
         <!-- Image container with template -->
@@ -61,9 +83,21 @@
         </div>
 
         <br>
-        <button onclick="downloadImage()">Download</button>
+        <br>
+        <button onclick="downloadImage()" class="ButtonStyle">Download</button>
 
         <script>
+
+
+ // Trigger file input when the custom button is clicked
+ function uploadButton() {
+        const userName = document.getElementById('userName').value;
+        if (!userName) {
+            alert("મહેરબાની કરી ને તમારું નામ દાખલ કરો."); // Alert message in Gujarati
+            return;
+        }
+        document.getElementById('upload').click();
+    }
             // Trigger file input and name input when the custom button is clicked
             function triggerUpload() {
                 document.getElementById('upload').click();
