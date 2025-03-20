@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Upload and Download Image</title>
 <link rel="icon" type="image/png" href="favicon.jpeg">
 <style>
-
-
-
-
-
     #content {  
-        /* position: relative; */
         width: auto;
     }
     img#main_banner_img{
@@ -21,7 +14,6 @@
         width: 100%;
         border-radius: 5px;
     }
-
     img#sample_img {
         position: absolute;
         top: 25%;
@@ -34,8 +26,6 @@
         position: absolute;
         left: -9999px;
     }
-
-    /* Style the visible button */
     .main_btn {
         display: inline-block;
         padding: 10px 20px;
@@ -103,32 +93,30 @@
     }
 </style>
 </head>
-<body onload="loader('hide')">
+<body>
     <div id="first_section">
         <img src="banner-img.jpg" alt="none" class="ImgBanner">
         <input type="text" placeholder="તમારું નામ દાખલ કરો " id="input_name" required>
         <label for="imageUpload" id="uploadButton" class="main_btn" style="cursor: not-allowed;">ફોટો અપલોડ કરો</label>
-        <!-- Hidden file input -->
         <input type="file" id="imageUpload" accept="image/*">
     </div>
-<div id="main_banner_section" style="display: none; padding: 10px;">
-    <div id="content">
-        <img id="main_banner_img" src="main_banner3.jpeg" alt="Sample Image">
-        <img id="sample_img" src="images.jpg" alt="Sample Image">
-        <span id="new_member_name">Niraj makwana</span>
-        <div class="ButtonDownlaod">
-            <button id="downloadButton">Download</button>
+
+    <div id="main_banner_section" style="display: none; padding: 10px;">
+        <div id="content">
+            <img id="main_banner_img" src="main_banner3.jpeg" alt="Sample Image">
+            <img id="sample_img" src="images.jpg" alt="Sample Image">
+            <span id="new_member_name">Niraj makwana</span>
+            <div class="ButtonDownlaod">
+                <button id="downloadButton">Download</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <script>
 document.getElementById('input_name').addEventListener('input', function() {
     var nameInput = document.getElementById('input_name').value;
     var uploadButton = document.getElementById('uploadButton');
     
-    // Enable the upload button if the name field is not empty, otherwise disable it
     if (nameInput.trim() !== '') {
         uploadButton.style.cursor = 'pointer';
         uploadButton.disabled = false;
@@ -138,17 +126,15 @@ document.getElementById('input_name').addEventListener('input', function() {
     }
 });
 
-
-// Check if name is entered before allowing upload
 document.getElementById('uploadButton').addEventListener('click', function(event) {
     var nameInput = document.getElementById('input_name').value;
     
-    // If the name is empty, show an alert and prevent file upload
     if (nameInput.trim() === '') {
         alert("કૃપા કરીને તમારું નામ દાખલ કરો.");
-        event.preventDefault(); // Prevent the default action (file input click)
+        event.preventDefault();
     }
 });
+
 document.getElementById('imageUpload').addEventListener('change', function(event) {
     var file = event.target.files[0];
     if (file) {
@@ -164,133 +150,41 @@ document.getElementById('imageUpload').addEventListener('change', function(event
     }
 });
 
-// document.getElementById('downloadButton').addEventListener('click', function() {
-//             var contentDiv = document.getElementById('content');
-//             html2canvas(contentDiv, {
-//                 // No scaling, use the exact size of the content
-//                 scale: 1,
-//                 useCORS: true
-//             }).then(function(canvas) {
-//                 var link = document.createElement('a');
-//                 link.href = canvas.toDataURL('image/png');
-//                 link.download = 'ramkatha.png'; // Image will be downloaded as ramkatha.png
-//                 document.body.appendChild(link);
-//                 link.click();
-//                 document.body.removeChild(link);
-//             });
-//         });
-// document.getElementById('downloadButton').addEventListener('click', function() {
-//     var mainBannerImg = document.getElementById('main_banner_img');
-//     var sampleImg = document.getElementById('sample_img');  
-    
-//     // Create a temporary canvas to combine the images
-//     var canvas = document.createElement('canvas');
-//     var ctx = canvas.getContext('2d');
-
-//     // Set canvas size to match the main banner image size
-//     canvas.width = mainBannerImg.width;
-//     canvas.height = mainBannerImg.height;
-
-//     // Draw the main banner image
-//     ctx.drawImage(mainBannerImg, 0, 0);
-
-//     // Draw the uploaded sample image
-//     var sampleImgElement = new Image();
-//     sampleImgElement.onload = function() {
-//         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
-
-//         // Create the link for downloading the image
-//         var link = document.createElement('a');
-//         link.href = canvas.toDataURL('image/png');
-//         link.download = 'Ram-katha-2025.png';
-
-//         // Trigger the download
-//         link.click();
-//     };
-
-//     // Load the uploaded image onto the canvas
-//     sampleImgElement.src = sampleImg.src;
-// });
-
-// document.getElementById('downloadButton').addEventListener('click', function() {
-//     var mainBannerImg = document.getElementById('main_banner_img');
-//     var sampleImg = document.getElementById('sample_img');  
-    
-//     // Create a temporary canvas to combine the images
-//     var canvas = document.createElement('canvas');
-//     var ctx = canvas.getContext('2d');
-
-//     // Set canvas size to match the full content size
-//     canvas.width = mainBannerImg.naturalWidth;
-//     canvas.height = mainBannerImg.naturalHeight;
-
-//     // Draw the main banner image first
-//     ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
-
-//     // Draw the uploaded sample image at the correct position and size
-//     var sampleImgElement = new Image();
-//     sampleImgElement.onload = function() {
-//         // Calculate the correct position of the sample image on the canvas
-//         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
-
-//         // Create a link to download the combined image
-//         var link = document.createElement('a');
-//         link.href = canvas.toDataURL('image/png');
-//         link.download = 'Ram-katha-2025.png';
-
-//         // Trigger the download
-//         link.click();
-//     };
-
-//     // Load the uploaded image onto the canvas
-//     sampleImgElement.src = sampleImg.src;
-// });
-
-
 document.getElementById('downloadButton').addEventListener('click', function() {
     var mainBannerImg = document.getElementById('main_banner_img');
     var sampleImg = document.getElementById('sample_img');
     var newMemberName = document.getElementById('new_member_name');  
     
-    // Create a temporary canvas to combine the images
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    // Set canvas size to match the main image size
     canvas.width = mainBannerImg.naturalWidth;
     canvas.height = mainBannerImg.naturalHeight;
 
-    // Draw the main banner image first
     ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
 
-    // Draw the uploaded image on the canvas
     var sampleImgElement = new Image();
     sampleImgElement.onload = function() {
-        // Ensure the sample image is drawn correctly at the position
         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
 
-        // Draw the user's name on the canvas at the correct position
-        ctx.font = "bold 17px sans-serif"; // Font style
-        ctx.fillStyle = "darkred"; // Name color
-        ctx.textAlign = "center"; // Text alignment
-        ctx.textBaseline = "middle"; // Text vertical alignment
+        // Draw the user's name with proper position on the canvas
+        ctx.font = "bold 17px sans-serif";
+        ctx.fillStyle = "darkred";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
 
-        // Position the name correctly on the canvas
-        var namePositionX = newMemberName.offsetLeft + newMemberName.offsetWidth / 2;
-        var namePositionY = newMemberName.offsetTop + newMemberName.offsetHeight / 2;
+        // Position the name based on the new_member_name position
+        var nameX = newMemberName.offsetLeft + newMemberName.offsetWidth / 2;
+        var nameY = newMemberName.offsetTop + newMemberName.offsetHeight / 2;
+        
+        ctx.fillText(newMemberName.textContent, nameX, nameY);
 
-        ctx.fillText(newMemberName.textContent, namePositionX, namePositionY);
-
-        // Create a link to download the combined image
         var link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
         link.download = 'Ram-katha-2025.png';
-
-        // Trigger the download
         link.click();
     };
 
-    // Load the uploaded image onto the canvas
     sampleImgElement.src = sampleImg.src;
 });
 </script>

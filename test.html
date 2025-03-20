@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Photo Upload and Download</title>
+        <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            display: inline-block;
+        }
+        #uploadedImage {
+            position: absolute;
+    top: 48%;
+    left: 73%;
+    transform: translate(-50%, -50%);
+    max-width: 40%;
+    max-height: 44%;
+        }
+        #template {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
+    </head>
+    <body>
+        <h2>Upload Your Photo</h2>
+        <input type="file" id="upload" accept="image/*">
+      
+        <br><br>
+        <div class="container" id="canvasContainer">
+            <img src="main_banner3.jpeg" id="template">
+            <img id="uploadedImage" style="display:none;">
+        </div>
+        <button onclick="downloadImage()">Download</button>
+        <script>
+        document.getElementById('upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const uploadedImage = document.getElementById('uploadedImage');
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function downloadImage() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const template = document.getElementById('template');
+            const uploadedImage = document.getElementById('uploadedImage');
+            
+            canvas.width = template.width;
+            canvas.height = template.height;
+            
+            ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+            if (uploadedImage.src) {
+                ctx.drawImage(uploadedImage, canvas.width / 2 - uploadedImage.width / 2, canvas.height * 0.6 - uploadedImage.height / 2, uploadedImage.width, uploadedImage.height);
+            }
+            
+            const link = document.createElement('a');
+            link.download = 'final_image.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+    </body>
+</html>

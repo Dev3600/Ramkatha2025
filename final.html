@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Photo Upload and Download</title>
+        <style>
+            body {
+                text-align: center;
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                position: relative;
+                display: inline-block;
+            }
+            #uploadedImage {
+                position: absolute;
+                top: 48%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                max-width: 40%;
+                max-height: 44%;
+                display: none;
+            }
+            #template {
+                width: 100%;
+                max-width: 500px;
+            }
+            #nameText {
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 24px;
+                color: white;
+                display: none;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Upload Your Photo</h2>
+
+        <!-- Hidden file input and text input -->
+        <input type="file" id="upload" accept="image/*" class="hidden">
+        <input type="text" id="userName" placeholder="તમારું નામ દાખલ કરો" class="hidden">
+
+        <!-- Custom button for photo upload -->
+        <button onclick="triggerUpload()">ફોટો અપલોડ કરો</button>
+        
+        <br><br>
+
+        <!-- Image container with template -->
+        <div class="container" id="canvasContainer">
+            <img src="main_banner3.jpeg" id="template">
+            <img id="uploadedImage">
+            <div id="nameText"></div>
+        </div>
+
+        <br>
+        <button onclick="downloadImage()">Download</button>
+
+        <script>
+            // Trigger file input and name input when the custom button is clicked
+            function triggerUpload() {
+                document.getElementById('upload').click();
+                document.getElementById('userName').classList.remove('hidden');
+            }
+
+            // Handle file upload and display the image
+            document.getElementById('upload').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const uploadedImage = document.getElementById('uploadedImage');
+                        uploadedImage.src = e.target.result;
+                        uploadedImage.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Display the entered name when the user uploads a photo
+            document.getElementById('userName').addEventListener('input', function() {
+                const nameText = document.getElementById('nameText');
+                const userName = document.getElementById('userName').value;
+                nameText.textContent = userName;
+                nameText.style.display = 'block';
+            });
+
+            // Download the image with both the uploaded image and the name text
+            function downloadImage() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const template = document.getElementById('template');
+                const uploadedImage = document.getElementById('uploadedImage');
+                const nameText = document.getElementById('nameText');
+
+                // Set canvas size based on template
+                canvas.width = template.width;
+                canvas.height = template.height;
+
+                // Draw the template image
+                ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+
+                // Draw the uploaded image
+                if (uploadedImage.src) {
+                    ctx.drawImage(uploadedImage, canvas.width / 2 - uploadedImage.width / 2, canvas.height * 0.6 - uploadedImage.height / 2, uploadedImage.width, uploadedImage.height);
+                }
+
+                // Draw the name text
+                if (nameText.style.display === 'block' && nameText.textContent) {
+                    ctx.font = '24px Arial';
+                    ctx.fillStyle = 'white';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(nameText.textContent, canvas.width / 2, canvas.height * 0.8);
+                }
+
+                // Trigger download
+                const link = document.createElement('a');
+                link.download = 'final_image.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            }
+        </script>
+    </body>
+</html>
