@@ -132,6 +132,17 @@ document.getElementById('input_name').addEventListener('input', function() {
     }
 });
 
+
+// Check if name is entered before allowing upload
+document.getElementById('uploadButton').addEventListener('click', function(event) {
+    var nameInput = document.getElementById('input_name').value;
+    
+    // If the name is empty, show an alert and prevent file upload
+    if (nameInput.trim() === '') {
+        alert("કૃપા કરીને તમારું નામ દાખલ કરો.");
+        event.preventDefault(); // Prevent the default action (file input click)
+    }
+});
 document.getElementById('imageUpload').addEventListener('change', function(event) {
     var file = event.target.files[0];
     if (file) {
