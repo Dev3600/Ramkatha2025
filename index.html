@@ -96,10 +96,16 @@
     #downloadButton{
         cursor: pointer;
     }
+    .ImgBanner{
+        width: 100%;
+        height: auto;
+        padding-bottom: 2rem;
+    }
 </style>
 </head>
 <body onload="loader('hide')">
     <div id="first_section">
+        <img src="banner-img.jpg" alt="none" class="ImgBanner">
         <input type="text" placeholder="તમારું નામ દાખલ કરો " id="input_name" required>
         <label for="imageUpload" id="uploadButton" class="main_btn" style="cursor: not-allowed;">ફોટો અપલોડ કરો</label>
         <!-- Hidden file input -->
@@ -173,6 +179,39 @@ document.getElementById('imageUpload').addEventListener('change', function(event
 //                 document.body.removeChild(link);
 //             });
 //         });
+// document.getElementById('downloadButton').addEventListener('click', function() {
+//     var mainBannerImg = document.getElementById('main_banner_img');
+//     var sampleImg = document.getElementById('sample_img');  
+    
+//     // Create a temporary canvas to combine the images
+//     var canvas = document.createElement('canvas');
+//     var ctx = canvas.getContext('2d');
+
+//     // Set canvas size to match the main banner image size
+//     canvas.width = mainBannerImg.width;
+//     canvas.height = mainBannerImg.height;
+
+//     // Draw the main banner image
+//     ctx.drawImage(mainBannerImg, 0, 0);
+
+//     // Draw the uploaded sample image
+//     var sampleImgElement = new Image();
+//     sampleImgElement.onload = function() {
+//         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
+
+//         // Create the link for downloading the image
+//         var link = document.createElement('a');
+//         link.href = canvas.toDataURL('image/png');
+//         link.download = 'Ram-katha-2025.png';
+
+//         // Trigger the download
+//         link.click();
+//     };
+
+//     // Load the uploaded image onto the canvas
+//     sampleImgElement.src = sampleImg.src;
+// });
+
 document.getElementById('downloadButton').addEventListener('click', function() {
     var mainBannerImg = document.getElementById('main_banner_img');
     var sampleImg = document.getElementById('sample_img');  
@@ -181,19 +220,20 @@ document.getElementById('downloadButton').addEventListener('click', function() {
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    // Set canvas size to match the main banner image size
-    canvas.width = mainBannerImg.width;
-    canvas.height = mainBannerImg.height;
+    // Set canvas size to match the full content size
+    canvas.width = mainBannerImg.naturalWidth;
+    canvas.height = mainBannerImg.naturalHeight;
 
-    // Draw the main banner image
-    ctx.drawImage(mainBannerImg, 0, 0);
+    // Draw the main banner image first
+    ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
 
-    // Draw the uploaded sample image
+    // Draw the uploaded sample image at the correct position and size
     var sampleImgElement = new Image();
     sampleImgElement.onload = function() {
+        // Calculate the correct position of the sample image on the canvas
         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
 
-        // Create the link for downloading the image
+        // Create a link to download the combined image
         var link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
         link.download = 'Ram-katha-2025.png';
@@ -205,7 +245,6 @@ document.getElementById('downloadButton').addEventListener('click', function() {
     // Load the uploaded image onto the canvas
     sampleImgElement.src = sampleImg.src;
 });
-
 </script>
 </body>
 </html>
