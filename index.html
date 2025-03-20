@@ -212,26 +212,74 @@ document.getElementById('imageUpload').addEventListener('change', function(event
 //     sampleImgElement.src = sampleImg.src;
 // });
 
+// document.getElementById('downloadButton').addEventListener('click', function() {
+//     var mainBannerImg = document.getElementById('main_banner_img');
+//     var sampleImg = document.getElementById('sample_img');  
+    
+//     // Create a temporary canvas to combine the images
+//     var canvas = document.createElement('canvas');
+//     var ctx = canvas.getContext('2d');
+
+//     // Set canvas size to match the full content size
+//     canvas.width = mainBannerImg.naturalWidth;
+//     canvas.height = mainBannerImg.naturalHeight;
+
+//     // Draw the main banner image first
+//     ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
+
+//     // Draw the uploaded sample image at the correct position and size
+//     var sampleImgElement = new Image();
+//     sampleImgElement.onload = function() {
+//         // Calculate the correct position of the sample image on the canvas
+//         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
+
+//         // Create a link to download the combined image
+//         var link = document.createElement('a');
+//         link.href = canvas.toDataURL('image/png');
+//         link.download = 'Ram-katha-2025.png';
+
+//         // Trigger the download
+//         link.click();
+//     };
+
+//     // Load the uploaded image onto the canvas
+//     sampleImgElement.src = sampleImg.src;
+// });
+
+
 document.getElementById('downloadButton').addEventListener('click', function() {
     var mainBannerImg = document.getElementById('main_banner_img');
-    var sampleImg = document.getElementById('sample_img');  
+    var sampleImg = document.getElementById('sample_img');
+    var newMemberName = document.getElementById('new_member_name');  
     
     // Create a temporary canvas to combine the images
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
 
-    // Set canvas size to match the full content size
+    // Set canvas size to match the main image size
     canvas.width = mainBannerImg.naturalWidth;
     canvas.height = mainBannerImg.naturalHeight;
 
     // Draw the main banner image first
     ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
 
-    // Draw the uploaded sample image at the correct position and size
+    // Draw the uploaded image on the canvas
     var sampleImgElement = new Image();
     sampleImgElement.onload = function() {
-        // Calculate the correct position of the sample image on the canvas
+        // Ensure the sample image is drawn correctly at the position
         ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
+
+        // Draw the user's name on the canvas at the correct position
+        ctx.font = "bold 17px sans-serif"; // Font style
+        ctx.fillStyle = "darkred"; // Name color
+        ctx.textAlign = "center"; // Text alignment
+        ctx.textBaseline = "middle"; // Text vertical alignment
+
+        // Position the name correctly on the canvas
+        var namePositionX = newMemberName.offsetLeft + newMemberName.offsetWidth / 2;
+        var namePositionY = newMemberName.offsetTop + newMemberName.offsetHeight / 2;
+
+        ctx.fillText(newMemberName.textContent, namePositionX, namePositionY);
 
         // Create a link to download the combined image
         var link = document.createElement('a');
