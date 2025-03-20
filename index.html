@@ -1,43 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upload and Download Image</title>
-<link rel="icon" type="image/png" href="favicon.jpeg">
-<style>
-    #content {  
-        width: auto;
-    }
-    img#main_banner_img{
-        position: relative;
-        width: 100%;
-        border-radius: 5px;
-    }
-    img#sample_img {
-        position: absolute;
-        top: 25%;
-        right: 6%;
-        height: 20%;
-        width: 36%;
-        border-radius: 10px;
-    }
-    #imageUpload {
-        position: absolute;
-        left: -9999px;
-    }
-    .main_btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #DB6F14;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        font-size: 20px;
-        font-weight: bold;
-    }
-    #input_name{
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Photo Upload and Download</title>
+        <style>
+            body {
+                text-align: center;
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                position: relative;
+                display: inline-block;
+            }
+            #uploadedImage {
+                position: absolute;
+                top: 50%;
+                left: 75%;
+                transform: translate(-50%, -50%);
+                max-width: 40%;
+                max-height: 44%;
+                display: none;
+            }
+            #template {
+                width: 100%;
+                max-width: 500px;
+            }
+            #nameText {
+                position: absolute;
+                top: 72%;
+                left: 75%;
+                transform: translate(-50%, -50%);
+                font-size: 24px;
+                color: darkred;
+                display: none;
+                text-align: center;
+            }
+            .input_name{
         border:1px solid #DB6F14;
         padding:20px;
         font-weight: bold;
@@ -45,148 +44,143 @@
         color: black;
         border-radius: 5px;
         margin-bottom: 20px;
-        text-transform: uppercase;
     }
-    #first_section{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    body{
-        margin: 0px;
-    }
-    #new_member_name{   
-        color: darkred;
-        font-weight: bold;
-        font-size: 17px;
-        position: absolute;
-        top: 47%;
-        text-align: center;
-        font-family: sans-serif;
-        right: 3%;
-        width: 38%;
-        text-transform: uppercase;
-    }
-    .ButtonDownlaod{
-        padding: 50px 0;
-        text-align: center;
-        margin: 0 auto;
-    }
-    .ButtonDownlaod button{
-        color: white;
+            .hidden {
+                display: none;
+            }
+            .ButtonStyle{   
+                color: white;
         border: none;
         outline: none;
         background-color: #DB6F14;
         padding: 15px 40px;
         border-radius: 10px;
         font-size: 17px;
-    }
-    #downloadButton{
-        cursor: pointer;
-    }
-    .ImgBanner{
-        width: 100%;
-        height: auto;
-        padding-bottom: 2rem;
-    }
-</style>
-</head>
-<body>
-    <div id="first_section">
-        <img src="banner-img.jpg" alt="none" class="ImgBanner">
-        <input type="text" placeholder="તમારું નામ દાખલ કરો " id="input_name" required>
-        <label for="imageUpload" id="uploadButton" class="main_btn" style="cursor: not-allowed;">ફોટો અપલોડ કરો</label>
-        <input type="file" id="imageUpload" accept="image/*">
-    </div>
+            }
+        </style>
+    </head>
+    <body>
+        <!-- <h2>ફોટો અપલોડ કરો</h2> -->
 
-    <div id="main_banner_section" style="display: none; padding: 10px;">
-        <div id="content">
-            <img id="main_banner_img" src="main_banner3.jpeg" alt="Sample Image">
-            <img id="sample_img" src="images.jpg" alt="Sample Image">
-            <span id="new_member_name">Niraj makwana</span>
-            <div class="ButtonDownlaod">
-                <button id="downloadButton">Download</button>
-            </div>
+        <!-- Hidden file input and text input -->
+        <input type="file" id="upload" accept="image/*" class="hidden">
+        <input type="text" id="userName" placeholder="તમારું નામ દાખલ કરો"
+            class="input_name">
+
+        <div class="ButtonDown">
+            <!-- Custom button for photo upload -->
+            <button onclick="uploadButton()" class="ButtonStyle">ફોટો અપલોડ
+                કરો</button>
         </div>
-    </div>
 
-<script>
-document.getElementById('input_name').addEventListener('input', function() {
-    var nameInput = document.getElementById('input_name').value;
-    var uploadButton = document.getElementById('uploadButton');
-    
-    if (nameInput.trim() !== '') {
-        uploadButton.style.cursor = 'pointer';
-        uploadButton.disabled = false;
-    } else {
-        uploadButton.style.cursor = 'not-allowed';
-        uploadButton.disabled = true;
+        <br><br>
+
+        <!-- Image container with template -->
+        <div class="container" id="canvasContainer">
+            <img src="main_banner3.jpeg" id="template">
+            <img id="uploadedImage">
+            <div id="nameText"></div>
+        </div>
+
+        <br>
+        <br>
+        <button onclick="downloadImage()" class="ButtonStyle">Download</button>
+
+        <script>
+
+
+ // Trigger file input when the custom button is clicked
+ function uploadButton() {
+        const userName = document.getElementById('userName').value;
+        if (!userName) {
+            alert("મહેરબાની કરી ને તમારું નામ દાખલ કરો."); // Alert message in Gujarati
+            return;
+        }
+        document.getElementById('upload').click();
     }
-});
+            // Trigger file input and name input when the custom button is clicked
+            function triggerUpload() {
+                document.getElementById('upload').click();
+                document.getElementById('userName').classList.remove('hidden');
+            }
 
-document.getElementById('uploadButton').addEventListener('click', function(event) {
-    var nameInput = document.getElementById('input_name').value;
-    
-    if (nameInput.trim() === '') {
-        alert("કૃપા કરીને તમારું નામ દાખલ કરો.");
-        event.preventDefault();
-    }
-});
+            // Handle file upload and display the image
+            document.getElementById('upload').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const uploadedImage = document.getElementById('uploadedImage');
+                        uploadedImage.src = e.target.result;
+                        uploadedImage.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
 
-document.getElementById('imageUpload').addEventListener('change', function(event) {
-    var file = event.target.files[0];
-    if (file) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var img = document.getElementById('sample_img');
-            img.src = e.target.result;
-            document.getElementById('main_banner_section').style.display = 'block';
-            document.getElementById('first_section').style.display = 'none';
-            document.getElementById('new_member_name').textContent = document.getElementById('input_name').value;
-        };
-        reader.readAsDataURL(file);
-    }
-});
+            // Display the entered name when the user uploads a photo
+            document.getElementById('userName').addEventListener('input', function() {
+                const nameText = document.getElementById('nameText');
+                const userName = document.getElementById('userName').value;
+                nameText.textContent = userName;
+                nameText.style.display = 'block';
+            });
 
-document.getElementById('downloadButton').addEventListener('click', function() {
-    var mainBannerImg = document.getElementById('main_banner_img');
-    var sampleImg = document.getElementById('sample_img');
-    var newMemberName = document.getElementById('new_member_name');  
-    
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
+            // Download the image with both the uploaded image and the name text
+            function downloadImage() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const template = document.getElementById('template');
+                const uploadedImage = document.getElementById('uploadedImage');
+                const nameText = document.getElementById('nameText');
 
-    canvas.width = mainBannerImg.naturalWidth;
-    canvas.height = mainBannerImg.naturalHeight;
+                // Set canvas size based on template
+                canvas.width = template.width;
+                canvas.height = template.height;
 
-    ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
+                ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
 
-    var sampleImgElement = new Image();
-    sampleImgElement.onload = function() {
-        ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
+// Draw the uploaded image with its exact position
+if (uploadedImage.src) {
+    const imageRect = uploadedImage.getBoundingClientRect();
+    const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
 
-        // Draw the user's name with proper position on the canvas
-        ctx.font = "bold 17px sans-serif";
-        ctx.fillStyle = "darkred";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+    // Calculate the image position relative to the container
+    const imageX = (imageRect.left - containerRect.left) * (canvas.width / containerRect.width);
+    const imageY = (imageRect.top - containerRect.top) * (canvas.height / containerRect.height);
+    const imageWidth = uploadedImage.width;
+    const imageHeight = uploadedImage.height;
 
-        // Position the name based on the new_member_name position
-        var nameX = newMemberName.offsetLeft + newMemberName.offsetWidth / 2;
-        var nameY = newMemberName.offsetTop + newMemberName.offsetHeight / 2;
-        
-        ctx.fillText(newMemberName.textContent, nameX, nameY);
+    ctx.drawImage(uploadedImage, imageX, imageY, imageWidth, imageHeight);
+}
 
-        var link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'Ram-katha-2025.png';
-        link.click();
-    };
+// Draw the name text with its exact position (adjusted downward)
+if (nameText.style.display === 'block' && nameText.textContent) {
+    const textRect = nameText.getBoundingClientRect();
+    const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
 
-    sampleImgElement.src = sampleImg.src;
-});
-</script>
-</body>
+    // Calculate the name text position relative to the container
+    const textX = (textRect.left - containerRect.left) * (canvas.width / containerRect.width);
+    let textY = (textRect.top - containerRect.top) * (canvas.height / containerRect.height);
+
+    // Adjust the Y position of the text slightly downward
+    textY += 20; // Increase this value to move it further down
+
+    ctx.font = '24px Arial';
+    ctx.fillStyle = 'darkred';
+    ctx.textAlign = 'center';
+    ctx.fillText(nameText.textContent, textX, textY);
+}
+
+                // Trigger download
+                const link = document.createElement('a');
+                link.download = 'final_image.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            }
+
+
+
+        </script>
+    </body>
 </html>

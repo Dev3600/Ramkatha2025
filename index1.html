@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload and Download Image</title>
+<link rel="icon" type="image/png" href="favicon.jpeg">
+<style>
+    #content {  
+        width: auto;
+    }
+    img#main_banner_img{
+        position: relative;
+        width: 100%;
+        border-radius: 5px;
+    }
+    img#sample_img {
+        position: absolute;
+        top: 25%;
+        right: 6%;
+        height: 20%;
+        width: 36%;
+        border-radius: 10px;
+    }
+    #imageUpload {
+        position: absolute;
+        left: -9999px;
+    }
+    .main_btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #DB6F14;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    #input_name{
+        border:1px solid #DB6F14;
+        padding:20px;
+        font-weight: bold;
+        font-size: 20px;
+        color: black;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+    #first_section{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    body{
+        margin: 0px;
+    }
+    #new_member_name{   
+        color: darkred;
+        font-weight: bold;
+        font-size: 17px;
+        position: absolute;
+        top: 47%;
+        text-align: center;
+        font-family: sans-serif;
+        right: 3%;
+        width: 38%;
+        text-transform: uppercase;
+    }
+    .ButtonDownlaod{
+        padding: 50px 0;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .ButtonDownlaod button{
+        color: white;
+        border: none;
+        outline: none;
+        background-color: #DB6F14;
+        padding: 15px 40px;
+        border-radius: 10px;
+        font-size: 17px;
+    }
+    #downloadButton{
+        cursor: pointer;
+    }
+    .ImgBanner{
+        width: 100%;
+        height: auto;
+        padding-bottom: 2rem;
+    }
+</style>
+</head>
+<body>
+    <div id="first_section">
+        <img src="banner-img.jpg" alt="none" class="ImgBanner">
+        <input type="text" placeholder="તમારું નામ દાખલ કરો " id="input_name" required>
+        <label for="imageUpload" id="uploadButton" class="main_btn" style="cursor: not-allowed;">ફોટો અપલોડ કરો</label>
+        <input type="file" id="imageUpload" accept="image/*">
+    </div>
+
+    <div id="main_banner_section" style="display: none; padding: 10px;">
+        <div id="content">
+            <img id="main_banner_img" src="main_banner3.jpeg" alt="Sample Image">
+            <img id="sample_img" src="images.jpg" alt="Sample Image">
+            <span id="new_member_name">Niraj makwana</span>
+            <div class="ButtonDownlaod">
+                <button id="downloadButton">Download</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.getElementById('input_name').addEventListener('input', function() {
+    var nameInput = document.getElementById('input_name').value;
+    var uploadButton = document.getElementById('uploadButton');
+    
+    if (nameInput.trim() !== '') {
+        uploadButton.style.cursor = 'pointer';
+        uploadButton.disabled = false;
+    } else {
+        uploadButton.style.cursor = 'not-allowed';
+        uploadButton.disabled = true;
+    }
+});
+
+document.getElementById('uploadButton').addEventListener('click', function(event) {
+    var nameInput = document.getElementById('input_name').value;
+    
+    if (nameInput.trim() === '') {
+        alert("કૃપા કરીને તમારું નામ દાખલ કરો.");
+        event.preventDefault();
+    }
+});
+
+document.getElementById('imageUpload').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = document.getElementById('sample_img');
+            img.src = e.target.result;
+            document.getElementById('main_banner_section').style.display = 'block';
+            document.getElementById('first_section').style.display = 'none';
+            document.getElementById('new_member_name').textContent = document.getElementById('input_name').value;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('downloadButton').addEventListener('click', function() {
+    var mainBannerImg = document.getElementById('main_banner_img');
+    var sampleImg = document.getElementById('sample_img');
+    var newMemberName = document.getElementById('new_member_name');  
+    
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+
+    canvas.width = mainBannerImg.naturalWidth;
+    canvas.height = mainBannerImg.naturalHeight;
+
+    ctx.drawImage(mainBannerImg, 0, 0, mainBannerImg.naturalWidth, mainBannerImg.naturalHeight);
+
+    var sampleImgElement = new Image();
+    sampleImgElement.onload = function() {
+        ctx.drawImage(sampleImgElement, sampleImg.offsetLeft, sampleImg.offsetTop, sampleImg.width, sampleImg.height);
+
+        // Draw the user's name with proper position on the canvas
+        ctx.font = "bold 17px sans-serif";
+        ctx.fillStyle = "darkred";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // Position the name based on the new_member_name position
+        var nameX = newMemberName.offsetLeft + newMemberName.offsetWidth / 2;
+        var nameY = newMemberName.offsetTop + newMemberName.offsetHeight / 2;
+        
+        ctx.fillText(newMemberName.textContent, nameX, nameY);
+
+        var link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'Ram-katha-2025.png';
+        link.click();
+    };
+
+    sampleImgElement.src = sampleImg.src;
+});
+</script>
+</body>
+</html>
