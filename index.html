@@ -36,80 +36,61 @@
                 display: none;
                 text-align: center;
             }
-            .input_name{
-        border:1px solid #DB6F14;
-        padding:20px;
-        font-weight: bold;
-        font-size: 20px;
-        color: black;
-        border-radius: 5px;
-        margin-bottom: 20px;
-    }
+            .input_name {
+                border: 1px solid #DB6F14;
+                padding: 20px;
+                font-weight: bold;
+                font-size: 20px;
+                color: black;
+                border-radius: 5px;
+                margin-bottom: 20px;
+            }
             .hidden {
                 display: none;
             }
-            .ButtonStyle{   
+            .ButtonStyle {
                 color: white;
-        border: none;
-        outline: none;
-        background-color: #DB6F14;
-        padding: 15px 40px;
-        border-radius: 10px;
-        font-size: 17px;
+                border: none;
+                outline: none;
+                background-color: #DB6F14;
+                padding: 15px 40px;
+                border-radius: 10px;
+                font-size: 17px;
+                cursor: pointer;
             }
         </style>
     </head>
     <body>
-        <!-- <h2>ફોટો અપલોડ કરો</h2> -->
-
-        <!-- Hidden file input and text input -->
         <input type="file" id="upload" accept="image/*" class="hidden">
-        <input type="text" id="userName" placeholder="તમારું નામ દાખલ કરો"
-            class="input_name">
-
+        <input type="text" id="userName" placeholder="તમારું નામ દાખલ કરો" class="input_name">
         <div class="ButtonDown">
-            <!-- Custom button for photo upload -->
-            <button onclick="uploadButton()" class="ButtonStyle">ફોટો અપલોડ
-                કરો</button>
+            <button onclick="uploadButton()" class="ButtonStyle">ફોટો અપલોડ કરો</button>
         </div>
-
         <br><br>
-
-        <!-- Image container with template -->
         <div class="container" id="canvasContainer">
             <img src="main_banner3.jpeg" id="template">
             <img id="uploadedImage">
             <div id="nameText"></div>
         </div>
-
         <br>
         <br>
         <button onclick="downloadImage()" class="ButtonStyle">Download</button>
 
         <script>
-
-
- // Trigger file input when the custom button is clicked
- function uploadButton() {
-        const userName = document.getElementById('userName').value;
-        if (!userName) {
-            alert("મહેરબાની કરી ને તમારું નામ દાખલ કરો."); // Alert message in Gujarati
-            return;
-        }
-        document.getElementById('upload').click();
-    }
-            // Trigger file input and name input when the custom button is clicked
-            function triggerUpload() {
+            function uploadButton() {
+                const userName = document.getElementById('userName').value;
+                if (!userName) {
+                    alert("મહેરબાની કરી ને તમારું નામ દાખલ કરો."); // Alert message in Gujarati
+                    return;
+                }
                 document.getElementById('upload').click();
-                document.getElementById('userName').classList.remove('hidden');
             }
 
-            // Handle file upload and display the image
-            document.getElementById('upload').addEventListener('change', function(event) {
+            document.getElementById('upload').addEventListener('change', function (event) {
                 const file = event.target.files[0];
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         const uploadedImage = document.getElementById('uploadedImage');
                         uploadedImage.src = e.target.result;
                         uploadedImage.style.display = 'block';
@@ -118,8 +99,7 @@
                 }
             });
 
-            // Display the entered name when the user uploads a photo
-            document.getElementById('userName').addEventListener('input', function() {
+            document.getElementById('userName').addEventListener('input', function () {
                 const nameText = document.getElementById('nameText');
                 const userName = document.getElementById('userName').value;
                 nameText.textContent = userName;
@@ -134,53 +114,50 @@
                 const uploadedImage = document.getElementById('uploadedImage');
                 const nameText = document.getElementById('nameText');
 
-                // Set canvas size based on template
-                canvas.width = template.width;
-                canvas.height = template.height;
+                // Increase canvas size for HD resolution (2x or more)
+                const canvasWidth = template.width * 2; // For HD, set 2x or 3x resolution
+                const canvasHeight = template.height * 2;
 
-                ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
 
-// Draw the uploaded image with its exact position
-if (uploadedImage.src) {
-    const imageRect = uploadedImage.getBoundingClientRect();
-    const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
+                // Scale the drawing to maintain high resolution
+                ctx.drawImage(template, 0, 0, canvasWidth, canvasHeight);
 
-    // Calculate the image position relative to the container
-    const imageX = (imageRect.left - containerRect.left) * (canvas.width / containerRect.width);
-    const imageY = (imageRect.top - containerRect.top) * (canvas.height / containerRect.height);
-    const imageWidth = uploadedImage.width;
-    const imageHeight = uploadedImage.height;
+                if (uploadedImage.src) {
+                    const imageRect = uploadedImage.getBoundingClientRect();
+                    const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
 
-    ctx.drawImage(uploadedImage, imageX, imageY, imageWidth, imageHeight);
-}
+                    // Calculate the image position relative to the container
+                    const imageX = (imageRect.left - containerRect.left) * (canvasWidth / containerRect.width);
+                    const imageY = (imageRect.top - containerRect.top) * (canvasHeight / containerRect.height);
+                    const imageWidth = uploadedImage.width * 2;  // Scale image for HD
+                    const imageHeight = uploadedImage.height * 2;
 
-// // Draw the name text with its exact position (adjusted downward)
-// if (nameText.style.display === 'block' && nameText.textContent) {
-//     const textRect = nameText.getBoundingClientRect();
-//     const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
+                    ctx.drawImage(uploadedImage, imageX, imageY, imageWidth, imageHeight);
+                }
 
-//     // Calculate the name text position relative to the container
-//     const textX = (textRect.left - containerRect.left) * (canvas.width / containerRect.width);
-//     let textY = (textRect.top - containerRect.top) * (canvas.height / containerRect.height);
+                // if (nameText.style.display === 'block' && nameText.textContent) {
+                //     const textRect = nameText.getBoundingClientRect();
+                //     const containerRect = document.getElementById('canvasContainer').getBoundingClientRect();
 
-//     // Adjust the Y position of the text slightly downward
-//     textY += 20; // Increase this value to move it further down
+                //     const textX = (textRect.left - containerRect.left) * (canvasWidth / containerRect.width);
+                //     let textY = (textRect.top - containerRect.top) * (canvasHeight / containerRect.height);
 
-//     ctx.font = '24px Arial';
-//     ctx.fillStyle = 'darkred';
-//     ctx.textAlign = 'center';
-//     ctx.fillText(nameText.textContent, textX, textY);
-// }
+                //     textY += 40; // Adjust text positioning if necessary
 
-                // Trigger download
+                //     ctx.font = '48px Arial';  // Larger font size for HD
+                //     ctx.fillStyle = 'darkred';
+                //     ctx.textAlign = 'center';
+                //     ctx.fillText(nameText.textContent, textX, textY);
+                // }
+
+                // Trigger download with high resolution image
                 const link = document.createElement('a');
-                link.download = 'final_image.png';
-                link.href = canvas.toDataURL();
+                link.download = 'ramkatha2025.png';
+                link.href = canvas.toDataURL('image/png');
                 link.click();
             }
-
-
-
         </script>
     </body>
 </html>
